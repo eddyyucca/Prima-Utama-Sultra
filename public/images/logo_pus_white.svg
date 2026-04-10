@@ -1,0 +1,23 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 200 52" width="200" height="52">
+  <!-- Building icon - white version for dark sidebar -->
+  <g transform="translate(2, 2)">
+    <!-- Building icon -->
+    <rect x="0" y="16" width="38" height="30" rx="2" fill="rgba(255,255,255,0.25)"/>
+    <rect x="3" y="7" width="32" height="12" rx="2" fill="rgba(255,255,255,0.35)"/>
+    <rect x="9" y="0" width="20" height="10" rx="2" fill="rgba(255,255,255,0.25)"/>
+    <!-- Windows -->
+    <rect x="4" y="19" width="7" height="7" rx="1" fill="white" opacity="0.8"/>
+    <rect x="15" y="19" width="7" height="7" rx="1" fill="white" opacity="0.8"/>
+    <rect x="26" y="19" width="7" height="7" rx="1" fill="white" opacity="0.8"/>
+    <rect x="4" y="30" width="7" height="7" rx="1" fill="white" opacity="0.8"/>
+    <rect x="26" y="30" width="7" height="7" rx="1" fill="white" opacity="0.8"/>
+    <!-- Door -->
+    <rect x="13" y="30" width="11" height="16" rx="1" fill="white" opacity="0.8"/>
+    <!-- Star on top -->
+    <polygon points="19,0 21,4 26,4 22,7 24,11 19,8 14,11 16,7 12,4 17,4" fill="#f0a500"/>
+  </g>
+  <!-- Text -->
+  <text x="52" y="22" font-family="Arial, sans-serif" font-size="16" font-weight="800" fill="#f0a500" letter-spacing="1">PUS</text>
+  <text x="52" y="35" font-family="Arial, sans-serif" font-size="7.5" font-weight="600" fill="rgba(255,255,255,0.85)" letter-spacing="0.3">PT PRIMA UTAMA SULTRA</text>
+  <text x="52" y="46" font-family="Arial, sans-serif" font-size="6.5" fill="rgba(255,255,255,0.5)" letter-spacing="0.2">Payroll Management System</text>
+</svg>

@@ -1,0 +1,10 @@
+{
+  "permissions": {
+    "allow": [
+      "Bash(del /Q \"c:\\\\xampp\\\\htdocs\\\\pus\\\\storage\\\\framework\\\\views\\\\*.php\")",
+      "Bash(del /Q \"c:\\\\xampp\\\\htdocs\\\\pus\\\\storage\\\\framework\\\\views\\\\*.blade.php\")",
+      "Bash(php -r ':*)",
+      "Bash(php -r \"echo PHP_OS . ' ' . phpversion\\(\\);\")"
+    ]
+  }
+}

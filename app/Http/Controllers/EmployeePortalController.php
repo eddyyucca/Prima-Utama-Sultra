@@ -71,7 +71,12 @@ class EmployeePortalController extends Controller
 
         $lemburPerJam = $record->gaji_pokok > 0 ? $record->gaji_pokok / 173.333333 : 0;
 
-        $pdf = \Barryvdh\DomPDF\Facade\Pdf::loadView('employee.slip_pdf', compact('record', 'lemburPerJam'));
+        $logoPath = public_path('images/logo_pus.png');
+        $logoBase64 = file_exists($logoPath)
+            ? 'data:image/png;base64,' . base64_encode(file_get_contents($logoPath))
+            : null;
+
+        $pdf = \Barryvdh\DomPDF\Facade\Pdf::loadView('employee.slip_pdf', compact('record', 'lemburPerJam', 'logoBase64'));
         $pdf->setPaper('A4', 'portrait');
 
         return $pdf->download("slip_gaji_{$record->nik}_{$record->period->period_label}.pdf");

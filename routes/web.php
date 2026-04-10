@@ -21,17 +21,21 @@ Route::get('/slip/{id}/download', [EmployeePortalController::class, 'downloadSli
 Route::middleware(['auth'])->prefix('admin')->name('admin.')->group(function () {
     Route::get('/dashboard', [DashboardController::class, 'index'])->name('dashboard');
 
-    // Salary management
-    Route::get('/salary', [SalaryController::class, 'index'])->name('salary.index');
-    Route::get('/salary/upload', [SalaryController::class, 'showUploadForm'])->name('salary.upload.form');
-    Route::post('/salary/upload', [SalaryController::class, 'upload'])->name('salary.upload');
-    Route::get('/salary/template', [SalaryController::class, 'exportTemplate'])->name('salary.template');
-    Route::get('/salary/period/{id}', [SalaryController::class, 'showPeriod'])->name('salary.period');
-    Route::post('/salary/period/{id}/publish', [SalaryController::class, 'publishPeriod'])->name('salary.period.publish');
-    Route::delete('/salary/period/{id}', [SalaryController::class, 'destroyPeriod'])->name('salary.period.destroy');
+    // Salary period management
+    Route::get('/salary',                        [SalaryController::class, 'index'])->name('salary.index');
+    Route::get('/salary/upload',                 [SalaryController::class, 'showUploadForm'])->name('salary.upload.form');
+    Route::post('/salary/upload',                [SalaryController::class, 'upload'])->name('salary.upload');
+    Route::get('/salary/template',               [SalaryController::class, 'exportTemplate'])->name('salary.template');
+    Route::get('/salary/sample',                 [SalaryController::class, 'exportSample'])->name('salary.sample');
+    Route::get('/salary/period/{id}',            [SalaryController::class, 'showPeriod'])->name('salary.period');
+    Route::get('/salary/period/{id}/preview',    [SalaryController::class, 'previewPeriod'])->name('salary.period.preview');
+    Route::post('/salary/period/{id}/publish',   [SalaryController::class, 'publishPeriod'])->name('salary.period.publish');
+    Route::delete('/salary/period/{id}',         [SalaryController::class, 'destroyPeriod'])->name('salary.period.destroy');
 
-    // Record CRUD
-    Route::get('/salary/record/{id}/edit', [SalaryController::class, 'edit'])->name('salary.record.edit');
-    Route::put('/salary/record/{id}', [SalaryController::class, 'update'])->name('salary.record.update');
-    Route::delete('/salary/record/{id}', [SalaryController::class, 'destroy'])->name('salary.record.destroy');
+    // Salary record CRUD
+    Route::get('/salary/{period_id}/record/create', [SalaryController::class, 'create'])->name('salary.record.create');
+    Route::post('/salary/{period_id}/record',        [SalaryController::class, 'store'])->name('salary.record.store');
+    Route::get('/salary/record/{id}/edit',           [SalaryController::class, 'edit'])->name('salary.record.edit');
+    Route::put('/salary/record/{id}',                [SalaryController::class, 'update'])->name('salary.record.update');
+    Route::delete('/salary/record/{id}',             [SalaryController::class, 'destroy'])->name('salary.record.destroy');
 });

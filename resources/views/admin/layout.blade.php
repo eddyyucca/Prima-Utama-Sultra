@@ -9,33 +9,56 @@
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@4.6.2/dist/css/bootstrap.min.css">
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/admin-lte@3.2/dist/css/adminlte.min.css">
     <style>
-        :root { --pus-dark: #1a3a5c; --pus-accent: #f0a500; }
-        .brand-link { background: #142d47 !important; border-bottom: 1px solid rgba(255,255,255,.12) !important; }
-        .brand-text { color: #f0a500 !important; font-size: 1rem !important; letter-spacing: .5px; }
-        .main-sidebar { background: #1a3a5c !important; }
-        [class*="sidebar-dark-"] .nav-sidebar > .nav-item > .nav-link.active,
-        [class*="sidebar-dark-"] .nav-sidebar > .nav-item > .nav-link.active:hover {
-            background: #f0a500 !important; color: #fff !important;
+        /* ── Sidebar colour override ── */
+        .main-sidebar,
+        .main-sidebar .sidebar,
+        .layout-fixed .main-sidebar { background-color: #1a3a5c !important; }
+
+        .main-sidebar .brand-link {
+            background-color: #142d47 !important;
+            border-bottom: 1px solid rgba(255,255,255,.12) !important;
+            padding: .8rem 1rem !important;
         }
-        [class*="sidebar-dark-"] .nav-sidebar .nav-link:hover {
-            background: rgba(255,255,255,.1) !important;
-        }
-        [class*="sidebar-dark-"] .nav-header { color: rgba(255,255,255,.4) !important; }
-        [class*="sidebar-dark-"] .user-panel > .info > a { color: rgba(255,255,255,.8); }
-        .content-wrapper { background: #f4f6f9; }
-        .card { border: none; border-radius: 8px; box-shadow: 0 1px 6px rgba(0,0,0,.08); }
+        .main-sidebar .brand-text { color: #f0a500 !important; font-size: .95rem !important; }
+        .main-sidebar .brand-link:hover { background-color: #0f2235 !important; }
+
+        /* Nav links */
+        .sidebar-dark-primary .nav-sidebar > .nav-item > .nav-link { color: rgba(255,255,255,.78) !important; }
+        .sidebar-dark-primary .nav-sidebar > .nav-item > .nav-link:hover { background: rgba(255,255,255,.1) !important; color: #fff !important; }
+        .sidebar-dark-primary .nav-sidebar > .nav-item > .nav-link.active { background: #f0a500 !important; color: #fff !important; }
+        .sidebar-dark-primary .nav-sidebar .nav-icon { color: rgba(255,255,255,.6) !important; }
+        .sidebar-dark-primary .nav-sidebar > .nav-item > .nav-link.active .nav-icon { color: #fff !important; }
+        .sidebar-dark-primary .nav-header { color: rgba(255,255,255,.35) !important; font-size: .68rem; letter-spacing: 1px; }
+        .sidebar-dark-primary .user-panel { border-bottom: 1px solid rgba(255,255,255,.1) !important; }
+        .sidebar-dark-primary .user-panel .info a { color: rgba(255,255,255,.82) !important; font-size: .84rem; }
+        .sidebar-dark-primary .sidebar-form input { background-color: rgba(255,255,255,.1); }
+
+        /* Topbar */
+        .main-header.navbar { border-bottom: 1px solid #e0e4ea; box-shadow: 0 1px 4px rgba(0,0,0,.06); }
+
+        /* Content */
+        .content-wrapper { background: #f0f2f5; }
+        .content-header { padding: 14px 16px 0; }
+        .content-header h1 { font-size: 1.35rem; font-weight: 700; color: #2d3a4a; }
+        .breadcrumb { background: transparent; padding: 0; margin: 0; }
+
+        /* Cards */
+        .card { border: none; border-radius: 8px; box-shadow: 0 1px 5px rgba(0,0,0,.07); }
         .card-header { border-radius: 8px 8px 0 0 !important; }
-        .small-box { border-radius: 8px; }
-        .small-box h3 { font-size: 2rem; }
+
+        /* Widgets */
+        .small-box { border-radius: 8px; overflow: hidden; }
+        .small-box h3 { font-size: 2rem; font-weight: 700; }
         .info-box { border-radius: 8px; }
-        .main-header { box-shadow: 0 1px 4px rgba(0,0,0,.08); }
-        .breadcrumb { background: transparent; padding: 0; }
-        .content-header { padding: 12px 15px 0; }
-        .content-header h1 { font-size: 1.4rem; font-weight: 600; color: #333; }
-        table.table th { font-size: .78rem; text-transform: uppercase; letter-spacing: .4px; color: #6c757d; font-weight: 600; }
-        table.table td { vertical-align: middle; font-size: .88rem; }
-        .badge { font-size: .77rem; }
-        .nav-sidebar .nav-link p { font-size: .9rem; }
+
+        /* Tables */
+        table.table th { font-size: .76rem; text-transform: uppercase; letter-spacing: .4px; color: #5a6776; font-weight: 700; }
+        table.table td { vertical-align: middle; font-size: .875rem; }
+
+        /* Misc */
+        .badge { font-size: .75rem; }
+        .nav-sidebar .nav-link p { font-size: .875rem; }
+        .main-footer { font-size: .82rem; color: #6c757d; }
     </style>
     @stack('styles')
 </head>
@@ -93,13 +116,10 @@
 </nav>
 
 {{-- ═══ SIDEBAR ═══ --}}
-<aside class="main-sidebar elevation-3" style="background:#1a3a5c">
-    <a href="{{ route('admin.dashboard') }}" class="brand-link">
-        <div class="d-flex align-items-center pl-2">
-            <i class="fas fa-building text-warning mr-2" style="font-size:1.2rem"></i>
-            <span class="brand-text font-weight-bold">PUS Payroll</span>
-        </div>
-        <small class="pl-2" style="color:rgba(255,255,255,.45);font-size:.7rem;display:block;margin-top:-2px">PT Prima Utama Sultra</small>
+<aside class="main-sidebar sidebar-dark-primary elevation-4">
+    <a href="{{ route('admin.dashboard') }}" class="brand-link" style="padding:.6rem 1rem !important">
+        <img src="{{ asset('images/logo_pus_white.png') }}" alt="PUS Logo"
+             style="height:40px;width:auto;max-width:168px;display:block">
     </a>
     <div class="sidebar">
         <div class="user-panel mt-3 pb-3 mb-3 d-flex align-items-center">
@@ -143,7 +163,13 @@
                 <li class="nav-item">
                     <a href="{{ route('admin.salary.template') }}" class="nav-link">
                         <i class="nav-icon fas fa-file-excel"></i>
-                        <p>Download Template</p>
+                        <p>Template Kosong</p>
+                    </a>
+                </li>
+                <li class="nav-item">
+                    <a href="{{ route('admin.salary.sample') }}" class="nav-link">
+                        <i class="nav-icon fas fa-database"></i>
+                        <p>Contoh Data (10 Karyawan)</p>
                     </a>
                 </li>
                 <li class="nav-item">
@@ -209,8 +235,18 @@
 
 <footer class="main-footer">
     <strong>PT Prima Utama Sultra</strong> &copy; {{ date('Y') }} Payroll System
-    <div class="float-right d-none d-sm-inline-block text-muted small">
-        <i class="fas fa-code mr-1"></i>v1.0
+    <div class="float-right d-none d-sm-inline-block" style="font-size:.8rem;color:#6c757d">
+        Developed by
+        <a href="https://github.com/eddyyucca" target="_blank" rel="noopener"
+           style="color:#1a3a5c;font-weight:600;text-decoration:none">Eddy Adha Saputra</a>
+        &nbsp;
+        <a href="https://github.com/eddyyucca" target="_blank" rel="noopener" title="GitHub" style="color:#333">
+            <i class="fab fa-github"></i>
+        </a>
+        &nbsp;
+        <a href="https://www.linkedin.com/in/eddyyucca/" target="_blank" rel="noopener" title="LinkedIn" style="color:#0077b5">
+            <i class="fab fa-linkedin"></i>
+        </a>
     </div>
 </footer>
 </div>{{-- /.wrapper --}}

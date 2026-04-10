@@ -1,0 +1,23 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 220 60" width="220" height="60">
+  <!-- Background shield/building icon -->
+  <g transform="translate(4, 4)">
+    <!-- Building icon -->
+    <rect x="0" y="18" width="44" height="34" rx="2" fill="#c0392b"/>
+    <rect x="4" y="8" width="36" height="14" rx="2" fill="#e74c3c"/>
+    <rect x="10" y="0" width="24" height="12" rx="2" fill="#c0392b"/>
+    <!-- Windows -->
+    <rect x="6" y="22" width="8" height="8" rx="1" fill="white" opacity="0.9"/>
+    <rect x="18" y="22" width="8" height="8" rx="1" fill="white" opacity="0.9"/>
+    <rect x="30" y="22" width="8" height="8" rx="1" fill="white" opacity="0.9"/>
+    <rect x="6" y="34" width="8" height="8" rx="1" fill="white" opacity="0.9"/>
+    <rect x="30" y="34" width="8" height="8" rx="1" fill="white" opacity="0.9"/>
+    <!-- Door -->
+    <rect x="16" y="34" width="12" height="18" rx="1" fill="white" opacity="0.9"/>
+    <!-- Star on top -->
+    <polygon points="22,0 24,5 29,5 25,8 27,13 22,10 17,13 19,8 15,5 20,5" fill="#f0a500"/>
+  </g>
+  <!-- Text -->
+  <text x="60" y="26" font-family="Arial, sans-serif" font-size="18" font-weight="800" fill="#1a3a5c" letter-spacing="1">PUS</text>
+  <text x="60" y="40" font-family="Arial, sans-serif" font-size="8.5" font-weight="600" fill="#c0392b" letter-spacing="0.3">PT PRIMA UTAMA SULTRA</text>
+  <text x="60" y="52" font-family="Arial, sans-serif" font-size="7" fill="#5a6776" letter-spacing="0.2">Payroll Management System</text>
+</svg>

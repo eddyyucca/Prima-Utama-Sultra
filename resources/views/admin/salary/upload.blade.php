@@ -199,8 +199,11 @@
         </div>
     </div>
     <div class="card-footer bg-transparent">
-        <a href="{{ route('admin.salary.template') }}" class="btn btn-success btn-block">
-            <i class="fas fa-download mr-2"></i>Download Template Resmi
+        <a href="{{ route('admin.salary.template') }}" class="btn btn-success btn-block mb-2">
+            <i class="fas fa-download mr-2"></i>Download Template Kosong
+        </a>
+        <a href="{{ route('admin.salary.sample') }}" class="btn btn-outline-primary btn-block">
+            <i class="fas fa-table mr-2"></i>Download Contoh Data (10 Karyawan)
         </a>
     </div>
 </div>

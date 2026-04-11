@@ -6,24 +6,28 @@
 
 @push('styles')
 <style>
-    .small-box .inner h3 { font-size: 1.8rem; }
-    .small-box .inner p { font-size: .85rem; margin-bottom: 0; }
-    .small-box .icon i { font-size: 60px; }
-    .growth-badge { font-size: .72rem; padding: 2px 6px; border-radius: 10px; }
-    .stat-mini .info-box { min-height: 68px; }
-    .stat-mini .info-box-icon { width: 60px; font-size: 1.3rem; line-height: 68px; }
+    .small-box .inner h3 { font-size: 1.5rem; }
+    .small-box .inner p { font-size: .82rem; margin-bottom: 0; }
+    .small-box .icon i { font-size: 55px; }
+    .growth-badge { font-size: .7rem; padding: 2px 6px; border-radius: 10px; }
+    .stat-mini .info-box { min-height: 72px; }
+    .stat-mini .info-box-icon { width: 60px; font-size: 1.3rem; line-height: 72px; }
     .stat-mini .info-box-content { padding: 10px 10px; }
     .stat-mini .info-box-text { font-size: .78rem; }
-    .stat-mini .info-box-number { font-size: 1.1rem; font-weight: 700; }
+    .stat-mini .info-box-number { font-size: 1rem; font-weight: 700; }
     .chart-card .card-body { padding: 15px; }
-    .top-earner-avatar { width:32px;height:32px;border-radius:50%;background:#1a3a5c;display:flex;align-items:center;justify-content:center;color:#fff;font-size:.75rem;font-weight:700 }
+    .top-earner-avatar { width:32px;height:32px;border-radius:50%;background:#1a3a5c;display:flex;align-items:center;justify-content:center;color:#fff;font-size:.75rem;font-weight:700; flex-shrink:0; }
+    .period-filter-bar { background:#fff;border-radius:8px;padding:.75rem 1rem;box-shadow:0 1px 4px rgba(0,0,0,.08);margin-bottom:1rem; }
+    .period-filter-bar select { border:1px solid #dee2e6;border-radius:6px;padding:.4rem .8rem;font-size:.88rem;font-weight:600;color:#1a3a5c; }
+    .period-filter-bar select:focus { outline:none;border-color:#1a3a5c;box-shadow:0 0 0 2px rgba(26,58,92,.15); }
+    .small-box .inner h3 small { font-size:.65em; font-weight:400; }
 </style>
 @endpush
 
 @section('content')
 @php
-    $fmt = fn($n) => 'Rp ' . number_format($n, 0, ',', '.');
-    $fmtM = fn($n) => 'Rp ' . number_format($n/1000000, 2) . 'M';
+    $fmt  = fn($n) => 'Rp ' . number_format($n, 0, ',', '.');
+    $fmtM = fn($n) => 'Rp ' . number_format($n/1000000, 2, '.', ',') . ' Jt';
 
     $growthKary = ($stats['karyawan_prev'] ?? 0) > 0
         ? round((($stats['total_karyawan'] - $stats['karyawan_prev']) / $stats['karyawan_prev']) * 100, 1)
@@ -32,6 +36,36 @@
         ? round((($stats['total_gaji'] - $stats['gaji_prev']) / $stats['gaji_prev']) * 100, 1)
         : 0;
 @endphp
+
+{{-- ═══ FILTER PERIODE ═══ --}}
+<div class="period-filter-bar d-flex align-items-center justify-content-between flex-wrap gap-2">
+    <div class="d-flex align-items-center">
+        <i class="fas fa-filter text-primary mr-2"></i>
+        <span class="font-weight-bold mr-3" style="font-size:.9rem">Filter Periode:</span>
+        <form method="GET" action="{{ route('admin.dashboard') }}" id="periodFilterForm">
+            <select name="period_id" class="form-control form-control-sm" data-autosubmit="true" style="min-width:260px">
+                <option value="">-- Periode Terbaru --</option>
+                @foreach($allPeriods as $ap)
+                <option value="{{ $ap->id }}"
+                    {{ (request('period_id') == $ap->id) ? 'selected' : '' }}>
+                    {{ $ap->period_label }}
+                    @if($ap->status === 'published') ✓ @else (Draft) @endif
+                </option>
+                @endforeach
+            </select>
+        </form>
+    </div>
+    <div class="d-flex align-items-center">
+        <a href="{{ route('admin.salary.upload.form') }}" class="btn btn-sm btn-primary">
+            <i class="fas fa-plus mr-1"></i>Periode Baru
+        </a>
+        @if($totalPeriods > 0)
+        <a href="{{ route('admin.salary.index') }}" class="btn btn-sm btn-outline-secondary ml-2">
+            <i class="fas fa-list mr-1"></i>Semua Periode
+        </a>
+        @endif
+    </div>
+</div>
 
 @if(!$latestPeriod)
 {{-- EMPTY STATE --}}
@@ -47,23 +81,26 @@
 </div>
 @else
 
-{{-- ═══ HEADER INFO ═══ --}}
-<div class="d-flex align-items-center justify-content-between mb-3">
-    <div>
-        <span class="text-muted small">Periode aktif:</span>
-        <strong class="ml-1">{{ $latestPeriod->period_label }}</strong>
-        <span class="badge {{ $latestPeriod->status === 'published' ? 'badge-success' : 'badge-warning' }} ml-1">
+{{-- ═══ HEADER INFO PERIODE AKTIF ═══ --}}
+<div class="d-flex align-items-center justify-content-between mb-3 p-2 rounded" style="background:rgba(26,58,92,.06);border-left:4px solid #1a3a5c">
+    <div class="d-flex align-items-center">
+        <i class="fas fa-calendar-check text-primary mr-2"></i>
+        <div>
+            <span class="text-muted small d-block" style="line-height:1.2">Menampilkan data periode:</span>
+            <strong class="text-dark">{{ $latestPeriod->period_label }}</strong>
+            <span class="ml-1">
+                <small class="text-muted">
+                    ({{ $latestPeriod->period_start->format('d M Y') }} – {{ $latestPeriod->period_end->format('d M Y') }})
+                </small>
+            </span>
+        </div>
+        <span class="badge {{ $latestPeriod->status === 'published' ? 'badge-success' : 'badge-warning' }} ml-2">
             {{ ucfirst($latestPeriod->status) }}
         </span>
     </div>
-    <div>
-        <a href="{{ route('admin.salary.period', $latestPeriod->id) }}" class="btn btn-sm btn-outline-primary">
-            <i class="fas fa-eye mr-1"></i>Lihat Detail
-        </a>
-        <a href="{{ route('admin.salary.upload.form') }}" class="btn btn-sm btn-primary ml-1">
-            <i class="fas fa-plus mr-1"></i>Periode Baru
-        </a>
-    </div>
+    <a href="{{ route('admin.salary.period', $latestPeriod->id) }}" class="btn btn-sm btn-outline-primary">
+        <i class="fas fa-eye mr-1"></i>Lihat Detail
+    </a>
 </div>
 
 {{-- ═══ MAIN STAT CARDS ═══ --}}
@@ -90,7 +127,7 @@
     <div class="col-lg-3 col-6">
         <div class="small-box bg-success">
             <div class="inner">
-                <h3 style="font-size:1.4rem">{{ number_format($stats['total_gaji']/1000000, 1) }}M</h3>
+                <h3>Rp {{ number_format($stats['total_gaji']/1000000, 1) }} <small>Juta</small></h3>
                 <p>
                     Total Transfer
                     @if($growthGaji != 0)
@@ -109,8 +146,8 @@
     <div class="col-lg-3 col-6">
         <div class="small-box bg-warning">
             <div class="inner">
-                <h3 style="font-size:1.3rem">{{ number_format($stats['avg_gaji']/1000000, 2) }}M</h3>
-                <p>Rata-rata Gaji</p>
+                <h3>Rp {{ number_format($stats['avg_gaji']/1000000, 2) }} <small>Juta</small></h3>
+                <p>Rata-rata Gaji / Karyawan</p>
             </div>
             <div class="icon"><i class="fas fa-chart-bar"></i></div>
             <a href="#" class="small-box-footer">Per karyawan</a>
@@ -137,7 +174,7 @@
             <span class="info-box-icon bg-primary elevation-1"><i class="fas fa-wallet"></i></span>
             <div class="info-box-content">
                 <span class="info-box-text text-muted">Total Gaji Pokok</span>
-                <span class="info-box-number">{{ number_format($stats['total_gaji_pokok']/1000000, 1) }}M</span>
+                <span class="info-box-number">Rp {{ number_format($stats['total_gaji_pokok']/1000000, 1) }} Jt</span>
             </div>
         </div>
     </div>
@@ -146,7 +183,7 @@
             <span class="info-box-icon bg-warning elevation-1"><i class="fas fa-clock"></i></span>
             <div class="info-box-content">
                 <span class="info-box-text text-muted">Total Lembur</span>
-                <span class="info-box-number">{{ number_format($stats['total_lembur']/1000000, 1) }}M</span>
+                <span class="info-box-number">Rp {{ number_format($stats['total_lembur']/1000000, 1) }} Jt</span>
             </div>
         </div>
     </div>
@@ -155,7 +192,7 @@
             <span class="info-box-icon bg-danger elevation-1"><i class="fas fa-minus-circle"></i></span>
             <div class="info-box-content">
                 <span class="info-box-text text-muted">Total Potongan</span>
-                <span class="info-box-number">{{ number_format($stats['total_potongan']/1000000, 1) }}M</span>
+                <span class="info-box-number">Rp {{ number_format($stats['total_potongan']/1000000, 1) }} Jt</span>
             </div>
         </div>
     </div>
@@ -202,12 +239,15 @@
                 </div>
             </div>
             <div class="card-body">
-                <canvas id="bankChart" height="180"></canvas>
+                <canvas id="bankChart" height="160"></canvas>
                 <div class="mt-2">
-                    @foreach($byBank->take(4) as $b)
+                    @foreach($byBank->take(5) as $b)
                     <div class="d-flex justify-content-between align-items-center mb-1">
                         <small class="text-muted text-truncate" style="max-width:120px">{{ $b->nama_bank ?: 'N/A' }}</small>
-                        <span class="badge badge-primary">{{ $b->jumlah }}</span>
+                        <div class="d-flex align-items-center">
+                            <span class="badge badge-primary mr-1">{{ $b->jumlah }} org</span>
+                            <small class="text-muted" style="font-size:.72rem">Rp {{ number_format($b->total/1000000, 1) }} Jt</small>
+                        </div>
                     </div>
                     @endforeach
                 </div>
@@ -224,6 +264,7 @@
             <div class="card-header border-0">
                 <h5 class="card-title font-weight-bold mb-0">
                     <i class="fas fa-sitemap text-warning mr-2"></i>Penggajian per Departemen
+                    <small class="text-muted font-weight-normal" style="font-size:.78rem">– {{ $latestPeriod->period_label }}</small>
                 </h5>
                 <div class="card-tools">
                     <button type="button" class="btn btn-tool" data-card-widget="collapse"><i class="fas fa-minus"></i></button>
@@ -250,10 +291,10 @@
                                     <span class="badge badge-info">{{ $dept->jumlah }}</span>
                                 </td>
                                 <td class="text-right" style="font-size:.82rem">
-                                    Rp {{ number_format($dept->total_pokok/1000000, 1) }}M
+                                    Rp {{ number_format($dept->total_pokok, 0, ',', '.') }}
                                 </td>
                                 <td class="text-right font-weight-bold" style="font-size:.82rem">
-                                    Rp {{ number_format($dept->total/1000000, 2) }}M
+                                    Rp {{ number_format($dept->total, 0, ',', '.') }}
                                 </td>
                             </tr>
                             @empty
@@ -265,8 +306,8 @@
                             <tr>
                                 <td class="font-weight-bold">TOTAL</td>
                                 <td class="text-center font-weight-bold">{{ $byDept->sum('jumlah') }}</td>
-                                <td class="text-right font-weight-bold">Rp {{ number_format($byDept->sum('total_pokok')/1000000, 1) }}M</td>
-                                <td class="text-right font-weight-bold">Rp {{ number_format($byDept->sum('total')/1000000, 2) }}M</td>
+                                <td class="text-right font-weight-bold">Rp {{ number_format($byDept->sum('total_pokok'), 0, ',', '.') }}</td>
+                                <td class="text-right font-weight-bold text-success">Rp {{ number_format($byDept->sum('total'), 0, ',', '.') }}</td>
                             </tr>
                         </tfoot>
                         @endif
@@ -282,23 +323,22 @@
             <div class="card-header border-0">
                 <h5 class="card-title font-weight-bold mb-0">
                     <i class="fas fa-trophy text-warning mr-2"></i>Top 5 Penerima Gaji
+                    <small class="text-muted font-weight-normal" style="font-size:.78rem">– {{ $latestPeriod->period_label }}</small>
                 </h5>
             </div>
             <div class="card-body p-0">
                 @forelse($topEarners as $i => $te)
                 <div class="d-flex align-items-center px-3 py-2 {{ !$loop->last ? 'border-bottom' : '' }}">
-                    <div class="top-earner-avatar mr-3 flex-shrink-0">
-                        {{ $i+1 }}
-                    </div>
+                    <div class="top-earner-avatar mr-3">{{ $i+1 }}</div>
                     <div class="flex-grow-1 overflow-hidden">
                         <div class="font-weight-bold text-truncate" style="font-size:.85rem">{{ $te->nama }}</div>
                         <small class="text-muted text-truncate d-block">{{ $te->department ?: '-' }}</small>
                     </div>
                     <div class="text-right flex-shrink-0 ml-2">
-                        <div class="font-weight-bold text-success" style="font-size:.85rem">
-                            Rp {{ number_format($te->total_ditransfer/1000000, 2) }}M
+                        <div class="font-weight-bold text-success" style="font-size:.82rem">
+                            Rp {{ number_format($te->total_ditransfer, 0, ',', '.') }}
                         </div>
-                        <small class="text-muted">Lembur: {{ number_format($te->lembur/1000, 0) }}K</small>
+                        <small class="text-muted">Lembur: Rp {{ number_format($te->lembur, 0, ',', '.') }}</small>
                     </div>
                 </div>
                 @empty
@@ -327,7 +367,7 @@
                         </thead>
                         <tbody>
                             @foreach($periods->take(6) as $p)
-                            <tr>
+                            <tr class="{{ $latestPeriod->id === $p->id ? 'table-primary' : '' }}">
                                 <td>
                                     <a href="{{ route('admin.salary.period', $p->id) }}"
                                        class="text-decoration-none font-weight-bold" style="font-size:.82rem">
@@ -338,7 +378,7 @@
                                     <span class="badge badge-secondary">{{ $p->records_count ?? 0 }}</span>
                                 </td>
                                 <td class="text-right" style="font-size:.8rem">
-                                    Rp {{ number_format(($p->records_sum_total_ditransfer ?? 0)/1000000, 1) }}M
+                                    Rp {{ number_format(($p->records_sum_total_ditransfer ?? 0)/1000000, 1) }} Jt
                                 </td>
                                 <td>
                                     <span class="badge {{ $p->status === 'published' ? 'badge-success' : 'badge-warning' }}">
@@ -370,14 +410,14 @@ new Chart(document.getElementById('trendChart'), {
     data: {
         labels,
         datasets: [{
-            label: 'Total Transfer (Juta)',
+            label: 'Total Transfer (Juta Rp)',
             data: totals.map(v => ((v||0)/1000000).toFixed(2)),
             borderColor: '#1a3a5c',
             backgroundColor: 'rgba(26,58,92,.08)',
             fill: true, tension: .4, yAxisID: 'y',
             pointBackgroundColor: '#1a3a5c', pointRadius: 4,
         }, {
-            label: 'Total Lembur (Juta)',
+            label: 'Total Lembur (Juta Rp)',
             data: lemburs.map(v => ((v||0)/1000000).toFixed(2)),
             borderColor: '#f0a500',
             backgroundColor: 'rgba(240,165,0,.05)',
@@ -394,7 +434,19 @@ new Chart(document.getElementById('trendChart'), {
     options: {
         responsive: true,
         interaction: { mode: 'index', intersect: false },
-        plugins: { legend: { position: 'top', labels: { font: { size: 11 } } } },
+        plugins: {
+            legend: { position: 'top', labels: { font: { size: 11 } } },
+            tooltip: {
+                callbacks: {
+                    label: function(ctx) {
+                        if (ctx.datasetIndex < 2) {
+                            return ctx.dataset.label + ': Rp ' + parseFloat(ctx.raw).toLocaleString('id-ID') + ' Jt';
+                        }
+                        return ctx.dataset.label + ': ' + ctx.raw + ' org';
+                    }
+                }
+            }
+        },
         scales: {
             y:  { type: 'linear', position: 'left',  title: { display: true, text: 'Juta Rp' }, grid: { color: '#f0f0f0' } },
             y1: { type: 'linear', position: 'right', title: { display: true, text: 'Karyawan' }, grid: { drawOnChartArea: false } }
@@ -417,7 +469,16 @@ new Chart(document.getElementById('bankChart'), {
     options: {
         responsive: true,
         cutout: '60%',
-        plugins: { legend: { display: false } }
+        plugins: {
+            legend: { display: false },
+            tooltip: {
+                callbacks: {
+                    label: function(ctx) {
+                        return ctx.label + ': ' + ctx.raw + ' karyawan';
+                    }
+                }
+            }
+        }
     }
 });
 @endif

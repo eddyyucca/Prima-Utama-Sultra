@@ -4,19 +4,31 @@ namespace App\Http\Controllers;
 
 use App\Models\SalaryPeriod;
 use App\Models\SalaryRecord;
+use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
 
 class DashboardController extends Controller
 {
-    public function index()
+    public function index(Request $request)
     {
-        $latestPeriod = SalaryPeriod::orderByDesc('period_start')->first();
-        $prevPeriod   = SalaryPeriod::orderByDesc('period_start')->skip(1)->first();
-        $totalPeriods = SalaryPeriod::count();
+        $allPeriods   = SalaryPeriod::orderByDesc('period_start')->get(['id', 'period_label', 'status']);
+        $totalPeriods = $allPeriods->count();
 
-        $stats   = [];
-        $byDept  = collect();
-        $byBank  = collect();
+        // Pilih periode berdasarkan filter, default ke periode terbaru
+        $selectedId   = $request->get('period_id');
+        $latestPeriod = $selectedId
+            ? SalaryPeriod::find($selectedId)
+            : SalaryPeriod::orderByDesc('period_start')->first();
+
+        // Periode sebelumnya (untuk perbandingan pertumbuhan)
+        $prevPeriod = $latestPeriod
+            ? SalaryPeriod::where('period_start', '<', $latestPeriod->period_start)
+                ->orderByDesc('period_start')->first()
+            : null;
+
+        $stats      = [];
+        $byDept     = collect();
+        $byBank     = collect();
         $topEarners = collect();
 
         if ($latestPeriod) {
@@ -32,7 +44,6 @@ class DashboardController extends Controller
                 'total_pph'        => $q->sum('pph21'),
             ];
 
-            // Pertumbuhan vs periode sebelumnya
             $stats['karyawan_prev'] = $prevPeriod ? $prevPeriod->records()->count() : 0;
             $stats['gaji_prev']     = $prevPeriod ? $prevPeriod->records()->sum('total_ditransfer') : 0;
 
@@ -74,7 +85,7 @@ class DashboardController extends Controller
         return view('admin.dashboard.index', compact(
             'latestPeriod', 'prevPeriod', 'totalPeriods',
             'stats', 'byDept', 'byBank', 'topEarners',
-            'periods', 'monthlyTrend'
+            'periods', 'monthlyTrend', 'allPeriods'
         ));
     }
 }

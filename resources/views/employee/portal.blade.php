@@ -6,6 +6,7 @@
     <title>Portal Slip Gaji - PT Prima Utama Sultra</title>
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
     <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" rel="stylesheet">
+    <link href="https://cdn.jsdelivr.net/npm/tom-select@2.3.1/dist/css/tom-select.bootstrap5.min.css" rel="stylesheet">
     <style>
         body { background: linear-gradient(135deg, #1a3a5c 0%, #0d2137 50%, #1a3a5c 100%); min-height: 100vh; font-family: 'Segoe UI', sans-serif; }
         .hero { padding: 4rem 0 2rem; text-align: center; color: #fff; }
@@ -17,7 +18,10 @@
         .btn-verify { background: #1a3a5c; color: #fff; padding: .85rem; font-weight: 700; border-radius: 12px; }
         .btn-verify:hover { background: #0d2137; color: #fff; }
         .info-box { background: rgba(26,58,92,.08); border-left: 4px solid #1a3a5c; border-radius: 0 8px 8px 0; padding: 1rem; margin-top: 1.5rem; }
-        .footer-text { text-align: center; color: rgba(255,255,255,.5); padding: 2rem 0; font-size: .85rem; }
+        .footer-text { text-align: center; color: rgba(255,255,255,.5); padding: 1.5rem 0 .5rem; font-size: .85rem; }
+        .footer-dev { text-align: center; color: rgba(255,255,255,.3); padding: .5rem 0 2rem; font-size: .75rem; }
+        .footer-dev a { color: rgba(255,255,255,.45); text-decoration: none; transition: color .2s; }
+        .footer-dev a:hover { color: rgba(255,255,255,.85); }
         .period-available { background: #f0f9f0; border: 1px solid #c3e6cb; border-radius: 8px; padding: .6rem 1rem; margin-bottom: .5rem; display: flex; justify-content: space-between; align-items: center; }
     </style>
 </head>
@@ -26,12 +30,12 @@
 <div class="hero">
     <div class="container">
         <div class="mb-3">
-            <span style="background:rgba(255,255,255,.1);padding:.4rem 1.2rem;border-radius:50px;color:rgba(255,255,255,.8);font-size:.85rem">
-                <i class="fas fa-building me-2"></i>PT Prima Utama Sultra
-            </span>
+            <img src="{{ asset('images/logo_pus_white.png') }}" alt="PT Prima Utama Sultra"
+                 style="height:64px;object-fit:contain;filter:drop-shadow(0 2px 6px rgba(0,0,0,.3))">
         </div>
-        <h1><i class="fas fa-file-invoice-dollar me-3" style="color:#f0a500"></i>Portal Slip Gaji</h1>
+        <h1></i>Portal Slip Gaji</h1>
         <p class="lead">Akses slip gaji Anda secara mudah dan aman</p>
+        
     </div>
 </div>
 
@@ -92,15 +96,6 @@
         </button>
     </form>
 
-    <div class="info-box mt-4">
-        <div class="fw-semibold small mb-1"><i class="fas fa-calendar-check me-2 text-success"></i>Periode Tersedia</div>
-        @foreach($periods as $p)
-        <div class="d-flex justify-content-between align-items-center py-1 border-bottom" style="font-size:.85rem">
-            <span>{{ $p->period_label }}</span>
-            <span class="badge bg-success">Tersedia</span>
-        </div>
-        @endforeach
-    </div>
     @endif
 </div>
 
@@ -118,12 +113,31 @@
     <span class="mx-3">|</span>
     © {{ date('Y') }} PT Prima Utama Sultra
 </div>
+<div class="footer-dev">
+    Developed by&nbsp;
+    <a href="https://github.com/eddyyucca" target="_blank" rel="noopener">
+        <i class="fab fa-github me-1"></i>Eddy Adha Saputra
+    </a>
+    &nbsp;&bull;&nbsp;
+    <a href="https://www.linkedin.com/in/eddyyucca/" target="_blank" rel="noopener">
+        <i class="fab fa-linkedin me-1"></i>LinkedIn
+    </a>
+</div>
 
 <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/tom-select@2.3.1/dist/js/tom-select.complete.min.js"></script>
 <script>
 document.querySelector('input[name="nik"]')?.addEventListener('input', function() {
     this.value = this.value.toUpperCase();
 });
+
+const periodSelect = document.querySelector('select[name="period_id"]');
+if (periodSelect) {
+    new TomSelect(periodSelect, {
+        allowEmptyOption: true,
+        placeholder: '-- Pilih Periode --'
+    });
+}
 </script>
 </body>
 </html>

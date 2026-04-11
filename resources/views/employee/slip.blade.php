@@ -64,14 +64,18 @@
 
     {{-- Header --}}
     <div class="slip-header">
-        <div class="d-flex justify-content-between align-items-start">
-            <div>
-                <div class="company">PT PRIMA UTAMA SULTRA</div>
-                <div class="subtitle">SLIP GAJI LENGKAP TENAGA KERJA</div>
-                <div class="subtitle mt-1">{{ $record->period->period_label }}</div>
+        <div class="d-flex justify-content-between align-items-center">
+            <div class="d-flex align-items-center gap-3">
+                <img src="{{ asset('images/logo_pus_white.png') }}" alt="PUS"
+                     style="height:56px;object-fit:contain;filter:drop-shadow(0 1px 4px rgba(0,0,0,.3));margin-right:14px">
+                <div>
+                    <div class="company">PT PRIMA UTAMA SULTRA</div>
+                    <div class="subtitle">SLIP GAJI LENGKAP TENAGA KERJA</div>
+                    <div class="subtitle mt-1">{{ $record->period->period_label }}</div>
+                </div>
             </div>
             <div class="text-end">
-                <div class="confidential">PRIVATE & CONFIDENTIAL</div>
+                <div class="confidential">PRIVATE &amp; CONFIDENTIAL</div>
                 <div class="subtitle mt-2">{{ $record->period->period_start->format('d/m/Y') }} s/d {{ $record->period->period_end->format('d/m/Y') }}</div>
             </div>
         </div>

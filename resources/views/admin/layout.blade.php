@@ -8,6 +8,7 @@
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.4/css/all.min.css">
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@4.6.2/dist/css/bootstrap.min.css">
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/admin-lte@3.2/dist/css/adminlte.min.css">
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/tom-select@2.3.1/dist/css/tom-select.bootstrap4.min.css">
     <style>
         /* ── Sidebar colour override ── */
         .main-sidebar,
@@ -255,6 +256,21 @@
 <script src="https://cdn.jsdelivr.net/npm/bootstrap@4.6.2/dist/js/bootstrap.bundle.min.js"></script>
 <script src="https://cdn.jsdelivr.net/npm/admin-lte@3.2/dist/js/adminlte.min.js"></script>
 <script src="https://cdn.jsdelivr.net/npm/chart.js@4.4.0/dist/chart.umd.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/tom-select@2.3.1/dist/js/tom-select.complete.min.js"></script>
+<script>
+document.addEventListener('DOMContentLoaded', function () {
+    document.querySelectorAll('select:not(.no-tomselect)').forEach(function (el) {
+        var autoSubmit = el.dataset.autosubmit === 'true';
+        new TomSelect(el, {
+            allowEmptyOption: true,
+            placeholder: el.querySelector('option[value=""]')?.textContent || 'Pilih...',
+            onChange: autoSubmit ? function () {
+                el.closest('form').submit();
+            } : undefined
+        });
+    });
+});
+</script>
 @stack('scripts')
 </body>
 </html>

@@ -126,16 +126,16 @@
                         <td class="text-truncate" style="max-width:140px;font-size:.82rem">{{ $r->department ?: '-' }}</td>
                         <td style="font-size:.82rem">{{ $r->nama_bank ?: '-' }}</td>
                         <td class="text-right" style="font-size:.82rem">
-                            {{ number_format($r->gaji_pokok, 0, ',', '.') }}
+                            Rp {{ number_format($r->gaji_pokok, 0, ',', '.') }}
                         </td>
                         <td class="text-right" style="font-size:.82rem">
-                            {{ number_format($r->lembur, 0, ',', '.') }}
+                            Rp {{ number_format($r->lembur, 0, ',', '.') }}
                         </td>
                         <td class="text-right text-danger" style="font-size:.82rem">
-                            {{ number_format($r->total_potongan, 0, ',', '.') }}
+                            Rp {{ number_format($r->total_potongan, 0, ',', '.') }}
                         </td>
                         <td class="text-right font-weight-bold text-success" style="font-size:.82rem">
-                            {{ number_format($r->total_ditransfer, 0, ',', '.') }}
+                            Rp {{ number_format($r->total_ditransfer, 0, ',', '.') }}
                         </td>
                         <td class="text-center">
                             <div class="btn-group btn-group-sm">

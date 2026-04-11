@@ -151,53 +151,53 @@ body { font-family: Arial, sans-serif; font-size: 9px; color: #222; line-height:
     <div class="sec-title green" style="margin-top:3px">A.1 Tidak Langsung (Tanggungan Perusahaan)</div>
     <div class="row-item">
         <div class="row-label">BPJS Kesehatan 4% (Perusahaan)</div>
-        <div class="row-amount g">{{ number_format($record->gaji_pokok * 0.04, 0, ',', '.') }}</div>
+        <div class="row-amount g">Rp {{ number_format($record->gaji_pokok * 0.04, 0, ',', '.') }}</div>
     </div>
     <div class="row-item">
         <div class="row-label">JHT 3,7%</div>
-        <div class="row-amount g">{{ number_format($record->jht_kary, 0, ',', '.') }}</div>
+        <div class="row-amount g">Rp {{ number_format($record->jht_kary, 0, ',', '.') }}</div>
     </div>
     <div class="row-item">
         <div class="row-label">JKM 0,3%</div>
-        <div class="row-amount g">{{ number_format($record->jkm, 0, ',', '.') }}</div>
+        <div class="row-amount g">Rp {{ number_format($record->jkm, 0, ',', '.') }}</div>
     </div>
     <div class="row-item">
         <div class="row-label">JKK 0,24%</div>
-        <div class="row-amount g">{{ number_format($record->jkk, 0, ',', '.') }}</div>
+        <div class="row-amount g">Rp {{ number_format($record->jkk, 0, ',', '.') }}</div>
     </div>
     <div class="row-item">
         <div class="row-label">Pensiun 3%</div>
-        <div class="row-amount g">{{ number_format($record->pensiun_kary, 0, ',', '.') }}</div>
+        <div class="row-amount g">Rp {{ number_format($record->pensiun_kary, 0, ',', '.') }}</div>
     </div>
     <div class="subtotal-row">
         <div class="row-label">Subtotal Tdk Langsung</div>
-        <div class="row-amount g">{{ number_format($record->tot_iuran_kary + ($record->gaji_pokok * 0.04), 0, ',', '.') }}</div>
+        <div class="row-amount g">Rp {{ number_format($record->tot_iuran_kary + ($record->gaji_pokok * 0.04), 0, ',', '.') }}</div>
     </div>
 
     <div class="sec-title" style="margin-top:4px">A.2 Langsung (Diterima Karyawan)</div>
     <div class="row-item">
         <div class="row-label">Gaji Dibayar ({{ $record->masuk_kerja_hari }} hari)</div>
-        <div class="row-amount">{{ number_format($record->gaji_kurangi_potongan, 0, ',', '.') }}</div>
+        <div class="row-amount">Rp {{ number_format($record->gaji_kurangi_potongan, 0, ',', '.') }}</div>
     </div>
     @if($record->rapel_gaji_lembur > 0)
     <div class="row-item">
         <div class="row-label">Rapel Gaji / Lembur</div>
-        <div class="row-amount">{{ number_format($record->rapel_gaji_lembur, 0, ',', '.') }}</div>
+        <div class="row-amount">Rp {{ number_format($record->rapel_gaji_lembur, 0, ',', '.') }}</div>
     </div>
     @endif
     @if($record->kompensasi_pkwt > 0)
     <div class="row-item">
         <div class="row-label">Kompensasi PKWT</div>
-        <div class="row-amount">{{ number_format($record->kompensasi_pkwt, 0, ',', '.') }}</div>
+        <div class="row-amount">Rp {{ number_format($record->kompensasi_pkwt, 0, ',', '.') }}</div>
     </div>
     @endif
     <div class="row-item">
         <div class="row-label">Lembur ({{ $record->lama_lembur_jam }} jam)</div>
-        <div class="row-amount">{{ number_format($record->lembur, 0, ',', '.') }}</div>
+        <div class="row-amount">Rp {{ number_format($record->lembur, 0, ',', '.') }}</div>
     </div>
     <div class="subtotal-row">
         <div class="row-label">Total Pendapatan Langsung</div>
-        <div class="row-amount">{{ number_format($record->total_pendapatan, 0, ',', '.') }}</div>
+        <div class="row-amount">Rp {{ number_format($record->total_pendapatan, 0, ',', '.') }}</div>
     </div>
 </td>
 
@@ -206,43 +206,43 @@ body { font-family: Arial, sans-serif; font-size: 9px; color: #222; line-height:
     <div class="sec-title red">B. Potongan</div>
     <div class="row-item">
         <div class="row-label">BPJS Kesehatan 1% (Karyawan)</div>
-        <div class="row-amount r">{{ number_format($record->bpjs_kesehatan_potongan, 0, ',', '.') }}</div>
+        <div class="row-amount r">Rp {{ number_format($record->bpjs_kesehatan_potongan, 0, ',', '.') }}</div>
     </div>
     <div class="row-item">
         <div class="row-label">BPJS TK 3% (Karyawan)</div>
-        <div class="row-amount r">{{ number_format($record->bpjs_tk_potongan, 0, ',', '.') }}</div>
+        <div class="row-amount r">Rp {{ number_format($record->bpjs_tk_potongan, 0, ',', '.') }}</div>
     </div>
     <div class="row-item">
         <div class="row-label">PPh 21</div>
-        <div class="row-amount r">{{ number_format($record->pph21, 0, ',', '.') }}</div>
+        <div class="row-amount r">Rp {{ number_format($record->pph21, 0, ',', '.') }}</div>
     </div>
     @if($record->pinjaman_pribadi > 0)
     <div class="row-item">
         <div class="row-label">Pinjaman Pribadi</div>
-        <div class="row-amount r">{{ number_format($record->pinjaman_pribadi, 0, ',', '.') }}</div>
+        <div class="row-amount r">Rp {{ number_format($record->pinjaman_pribadi, 0, ',', '.') }}</div>
     </div>
     @endif
     @if($record->sumbangan > 0)
     <div class="row-item">
         <div class="row-label">Sumbangan</div>
-        <div class="row-amount r">{{ number_format($record->sumbangan, 0, ',', '.') }}</div>
+        <div class="row-amount r">Rp {{ number_format($record->sumbangan, 0, ',', '.') }}</div>
     </div>
     @endif
     @if($record->pembuatan_rekening > 0)
     <div class="row-item">
         <div class="row-label">Pembuatan Rekening</div>
-        <div class="row-amount r">{{ number_format($record->pembuatan_rekening, 0, ',', '.') }}</div>
+        <div class="row-amount r">Rp {{ number_format($record->pembuatan_rekening, 0, ',', '.') }}</div>
     </div>
     @endif
     @if($record->meterai > 0)
     <div class="row-item">
         <div class="row-label">Meterai</div>
-        <div class="row-amount r">{{ number_format($record->meterai, 0, ',', '.') }}</div>
+        <div class="row-amount r">Rp {{ number_format($record->meterai, 0, ',', '.') }}</div>
     </div>
     @endif
     <div class="subtotal-row">
         <div class="row-label">Total Potongan</div>
-        <div class="row-amount r">{{ number_format($record->total_potongan, 0, ',', '.') }}</div>
+        <div class="row-amount r">Rp {{ number_format($record->total_potongan, 0, ',', '.') }}</div>
     </div>
 
     {{-- KEHADIRAN --}}
